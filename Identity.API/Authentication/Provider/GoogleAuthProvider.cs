@@ -13,7 +13,7 @@ namespace Identity.API.Authentication.Provider
     public class GoogleAuthProvider : IGoogleAuthProvider
     {
         private const string MetadataAddress = "https://accounts.google.com/.well-known/openid-configuration";
-        private const string Issuer = "accounts.google.com";
+        private const string Issuer = "https://accounts.google.com";
         
         private readonly ILogger<GoogleAuthProvider> _logger;
         private readonly string _audience;
