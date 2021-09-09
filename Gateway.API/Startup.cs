@@ -20,9 +20,20 @@ namespace Gateway.API
             var proxyBuilder = services.AddReverseProxy();
             proxyBuilder.LoadFromConfig(_configuration.GetSection("ReverseProxy"));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddDabitJwtBearerConfiguration(_configuration);
-            
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .WithHeaders("content-type")
+                );
+            });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("dabit-jwt", policy => policy.RequireAuthenticatedUser());
@@ -36,13 +47,11 @@ namespace Gateway.API
             }
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapReverseProxy();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapReverseProxy(); });
         }
     }
 }
