@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Application.Extensions;
-using Domain.Habits.Schedules;
 using Domain.SeedWork.Exceptions;
 
 namespace Domain.Habits.Completions
@@ -12,40 +9,19 @@ namespace Domain.Habits.Completions
         public IReadOnlyCollection<int> Values => _completions.ToImmutableHashSet();
 
         private readonly HashSet<int> _completions = new();
-        private readonly Schedule _schedule;
 
-        public HabitCompletions(Schedule schedule) {
-            _schedule = schedule;
+        public void Insert(int nthEvent) {
+            if (_completions.Contains(nthEvent))
+                throw new DomainException(typeof(HabitCompletions), "Cannot add an event that is already counted");
+
+            _completions.Add(nthEvent);
         }
 
-        public void ThrowIfInvalidDay(DateTime day) {
-            var (canBeCompleted, reason) = _schedule.ValidateDayCanBeCompleted(day);
-            if (!canBeCompleted)
-            {
-                throw new DomainException(
-                    typeof(HabitCompletions),
-                    $"{day.ToShortDate()} can not be done on that day, because the {reason}"
-                );
-            }
+        public void Remove(int nthEvent) {
+            if (!_completions.Contains(nthEvent))
+                throw new DomainException(typeof(HabitCompletions), "Cannot remove an event that was never counted");
 
-            var index = _schedule.GetIntervalNumberForDay(day);
-
-            if (_completions.Contains(index))
-                throw new DomainException(typeof(HabitCompletions), "Cannot add a day that is already counted");
-        }
-
-        public void Insert(int intervalNumber) {
-            if (_completions.Contains(intervalNumber))
-                throw new DomainException(typeof(HabitCompletions), "Cannot add an existing interval");
-            
-            _completions.Add(intervalNumber);
-        }
-
-        public void Remove(int intervalNumber) {
-            if (!_completions.Contains(intervalNumber))
-                throw new DomainException(typeof(HabitCompletions), "Cannot remove a day that was never counted");
-
-            _completions.Remove(intervalNumber);
+            _completions.Remove(nthEvent);
         }
     }
 }

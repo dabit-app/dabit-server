@@ -24,14 +24,14 @@ namespace Domain.Habits.Schedules
         public DateTime? EndDate { get; }
         public TimeSpan Cadency { get; }
         public TimeSpan Duration { get; }
-        public DayOfWeek DayOfWeek { get; }
+        public DaysOfWeek DaysOfWeek { get; }
 
         public Schedule(
             DateTime startDate,
             DateTime? endDate,
             TimeSpan cadency,
             TimeSpan duration,
-            DayOfWeek dayOfWeek = DayOfWeek.None
+            DaysOfWeek daysOfWeek = DaysOfWeek.None
         ) {
             if (endDate <= startDate)
                 throw new DomainException(typeof(Schedule), "The end date cannot be smaller or equals to start date");
@@ -39,34 +39,29 @@ namespace Domain.Habits.Schedules
             if (duration > cadency)
                 throw new DomainException(typeof(Schedule), "The duration cannot be higher than cadency");
 
-            if (dayOfWeek != DayOfWeek.None && cadency.ToDays % 7 != 0)
+            if (daysOfWeek != DaysOfWeek.None && cadency.ToDays % 7 != 0)
                 throw new DomainException(typeof(Schedule), "Cadency must be in a number of week.");
 
-            if (dayOfWeek != DayOfWeek.None && duration.ToDays != 7)
+            if (daysOfWeek != DaysOfWeek.None && duration.ToDays != 7)
                 throw new DomainException(typeof(Schedule), "Duration must be exactly a week when using day of week.");
 
             StartDate = startDate.Date;
             EndDate = endDate?.Date;
             Cadency = cadency;
             Duration = duration;
-            DayOfWeek = dayOfWeek;
+            DaysOfWeek = daysOfWeek;
         }
 
-        /// <summary>
-        /// Validate if a day can be marked as completed
-        /// </summary>
-        public (bool, string) ValidateDayCanBeCompleted(DateTime day) {
+        /// <summary>Return the nth event for a given day according to the schedule.</summary>
+        /// <remarks>
+        /// This can be reversed back to a date span (2 dates).
+        /// 
+        /// It is possible because a habit is a list of non-overlapping interval and those
+        /// interval are predictable from a schedule definition and the schedule is immutable.
+        /// </remarks>
+        public int GetNthEventAt(DateTime day) {
             if (!(day >= StartDate && (EndDate == null || day < EndDate)))
-                return (false, "date is out of bound from the schedule");
-
-            if (DayOfWeek != DayOfWeek.None && !DayOfWeek.HasFlag(day.ToDayOfWeek()))
-            {
-                return (
-                    false,
-                    $"date is on {day.ToDayOfWeek().ToString()} but this is not accepted according to the schedule"
-                );
-            }
-
+                throw new DomainException(typeof(Schedule), "The date is out of bound from the schedule");
 
             var deltaDay = day - StartDate;
             var cadencyTime = (int) Math.Floor(deltaDay.TotalDays / Cadency.ToDays);
@@ -74,29 +69,25 @@ namespace Domain.Habits.Schedules
             var minDate = StartDate.AddDays(Cadency.ToDays * cadencyTime);
             var maxDate = minDate.AddDays(Duration.ToDays);
 
-            return (
-                day >= minDate && day < maxDate,
-                $"date should have been between {minDate.ToShortDate()} and {maxDate.ToShortDate()} (exclusive)"
-            );
-        }
+            if (!(day >= minDate && day < maxDate))
+                throw new DomainException(
+                    typeof(Schedule),
+                    $"The date should have been between {minDate.ToShortDate()} and {maxDate.ToShortDate()} (exclusive) to be valid."
+                );
 
-        /// <summary>
-        /// Return an interval number which represent an unique interval according to the schedule.
-        /// This can be reversed back to a timespan (2 date).
-        ///
-        /// It is possible because a habit is a list of non-overlapping interval and those
-        /// interval are predictable from a schedule definition and the schedule is immutable.
-        /// </summary>
-        public int GetIntervalNumberForDay(DateTime day) {
-            var cadencyDays = Cadency.ToDays;
-            var deltaDay = day - StartDate;
-            var cadencyTime = (int) Math.Floor(deltaDay.TotalDays / cadencyDays);
+            if (DaysOfWeek == DaysOfWeek.None)
+                return cadencyTime + 1;
 
-            var dayOfWeekShift = 0;
-            if (DayOfWeek != DayOfWeek.None)
-                dayOfWeekShift = day.DayOfWeek.ToNumber();
+            var daysActivatedPerWeek = DaysOfWeek.Count();
+            var nthDayOfTheWeek = DaysOfWeek.GetNthFrom(StartDate.DayOfWeek, day.DayOfWeek);
 
-            return cadencyTime * cadencyDays + dayOfWeekShift;
+            if (nthDayOfTheWeek == null)
+                throw new DomainException(
+                    typeof(DaysOfWeek),
+                    "That day of the week was not enabled according to the schedule"
+                );
+
+            return cadencyTime * daysActivatedPerWeek + nthDayOfTheWeek.Value;
         }
     }
 }
