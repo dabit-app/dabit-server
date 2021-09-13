@@ -32,10 +32,10 @@ namespace Domain.Habits.Projections
                 case HabitScheduleDefined habitScheduleDefined:
                     Apply(habitScheduleDefined);
                     return;
-                case HabitDayCompleted habitDayCompleted:
+                case HabitEventCompleted habitDayCompleted:
                     Apply(habitDayCompleted);
                     return;
-                case HabitDayUncompleted habitDayUncompleted:
+                case HabitEventUncompleted habitDayUncompleted:
                     Apply(habitDayUncompleted);
                     return;
                 case HabitDeleted habitDeleted:
@@ -60,12 +60,12 @@ namespace Domain.Habits.Projections
             Schedule = @event.Schedule;
         }
 
-        private void Apply(HabitDayCompleted @event) {
-            Completions.Add(@event.IntervalNumber);
+        private void Apply(HabitEventCompleted @event) {
+            Completions.Add(@event.NthEvent);
         }
 
-        private void Apply(HabitDayUncompleted @event) {
-            Completions.Remove(@event.IntervalNumber);
+        private void Apply(HabitEventUncompleted @event) {
+            Completions.Remove(@event.NthEvent);
         }
         
         private void Apply(HabitDeleted habitDeleted) {
