@@ -12,30 +12,30 @@ namespace Application.Application.DTO.Shared
         public bool Saturday { get; init; }
         public bool Sunday { get; init; }
 
-        public DayOfWeek ToDayOfWeek() {
+        public DaysOfWeek ToDayOfWeek() {
             return
-                (Monday ? DayOfWeek.Monday : DayOfWeek.None) |
-                (Tuesday ? DayOfWeek.Tuesday : DayOfWeek.None) |
-                (Wednesday ? DayOfWeek.Wednesday : DayOfWeek.None) |
-                (Thursday ? DayOfWeek.Thursday : DayOfWeek.None) |
-                (Friday ? DayOfWeek.Friday : DayOfWeek.None) |
-                (Saturday ? DayOfWeek.Saturday : DayOfWeek.None) |
-                (Sunday ? DayOfWeek.Sunday : DayOfWeek.None);
+                (Monday ? DaysOfWeek.Monday : DaysOfWeek.None) |
+                (Tuesday ? DaysOfWeek.Tuesday : DaysOfWeek.None) |
+                (Wednesday ? DaysOfWeek.Wednesday : DaysOfWeek.None) |
+                (Thursday ? DaysOfWeek.Thursday : DaysOfWeek.None) |
+                (Friday ? DaysOfWeek.Friday : DaysOfWeek.None) |
+                (Saturday ? DaysOfWeek.Saturday : DaysOfWeek.None) |
+                (Sunday ? DaysOfWeek.Sunday : DaysOfWeek.None);
         }
 
-        public static DayOfWeekDto? From(DayOfWeek from) {
-            if (from == DayOfWeek.None)
+        public static DayOfWeekDto? From(DaysOfWeek from) {
+            if (from == DaysOfWeek.None)
                 return null;
             
             return new DayOfWeekDto
             {
-                Monday = from.HasFlag(DayOfWeek.Monday),
-                Tuesday = from.HasFlag(DayOfWeek.Tuesday),
-                Wednesday = from.HasFlag(DayOfWeek.Wednesday),
-                Thursday = from.HasFlag(DayOfWeek.Thursday),
-                Friday = from.HasFlag(DayOfWeek.Friday),
-                Saturday = from.HasFlag(DayOfWeek.Saturday),
-                Sunday = from.HasFlag(DayOfWeek.Sunday)
+                Monday = from.HasFlag(DaysOfWeek.Monday),
+                Tuesday = from.HasFlag(DaysOfWeek.Tuesday),
+                Wednesday = from.HasFlag(DaysOfWeek.Wednesday),
+                Thursday = from.HasFlag(DaysOfWeek.Thursday),
+                Friday = from.HasFlag(DaysOfWeek.Friday),
+                Saturday = from.HasFlag(DaysOfWeek.Saturday),
+                Sunday = from.HasFlag(DaysOfWeek.Sunday)
             };
         }
     }

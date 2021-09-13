@@ -2,7 +2,6 @@ using System;
 using Domain.Habits.Schedules;
 using Domain.SeedWork.Exceptions;
 using Xunit;
-using DayOfWeek = Domain.Habits.Schedules.DayOfWeek;
 using TimeSpan = Domain.Habits.Schedules.TimeSpan;
 
 namespace Domain.Tests
@@ -22,7 +21,7 @@ namespace Domain.Tests
             Assert.Equal(DateTime.Today.AddMonths(1), everyDay.EndDate);
             Assert.Equal(new TimeSpan(), everyDay.Cadency);
             Assert.Equal(new TimeSpan(), everyDay.Duration);
-            Assert.Equal(DayOfWeek.None, everyDay.DayOfWeek);
+            Assert.Equal(DaysOfWeek.None, everyDay.DaysOfWeek);
 
             var everyThreeDay = new Schedule(
                 DateTime.Today,
@@ -38,11 +37,11 @@ namespace Domain.Tests
                 null,
                 new TimeSpan(TimeUnit.Week),
                 new TimeSpan(TimeUnit.Week),
-                DayOfWeek.Tuesday | DayOfWeek.Wednesday
+                DaysOfWeek.Tuesday | DaysOfWeek.Wednesday
             );
 
             Assert.Equal(new TimeSpan(TimeUnit.Week), everyWeekOnTueWed.Cadency);
-            Assert.Equal(DayOfWeek.Tuesday | DayOfWeek.Wednesday, everyWeekOnTueWed.DayOfWeek);
+            Assert.Equal(DaysOfWeek.Tuesday | DaysOfWeek.Wednesday, everyWeekOnTueWed.DaysOfWeek);
         }
 
         [Fact]
@@ -92,7 +91,7 @@ namespace Domain.Tests
                 DateTime.Today.AddMonths(1),
                 new TimeSpan(TimeUnit.Day, 2),
                 new TimeSpan(TimeUnit.Day, 2),
-                DayOfWeek.Monday | DayOfWeek.Friday
+                DaysOfWeek.Monday | DaysOfWeek.Friday
             ));
 
             Assert.Throws<DomainException>(schedule);

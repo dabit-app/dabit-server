@@ -28,7 +28,7 @@ namespace Application.Application.DTO.Shared
                 EndDate = from.EndDate,
                 Cadency = TimeSpanDto.From(from.Cadency),
                 Duration = TimeSpanDto.From(from.Duration),
-                DayOfWeek = DayOfWeekDto.From(from.DayOfWeek)
+                DayOfWeek = DayOfWeekDto.From(from.DaysOfWeek)
             };
         }
     }
