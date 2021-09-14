@@ -85,7 +85,7 @@ namespace Domain.Tests
         }
 
         [Fact]
-        public void CannotHaveCadencyLessThanAWeekWithDayOfWeekUsed() {
+        public void CannotHaveCadencyLessThanAWeekWithDaysOfWeekUsed() {
             var schedule = new Action(() => _ = new Schedule(
                 DateTime.Today,
                 DateTime.Today.AddMonths(1),

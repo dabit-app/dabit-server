@@ -9,7 +9,7 @@ namespace Application.Application.DTO.Shared
         public DateTime? EndDate { get; init; }
         public TimeSpanDto Cadency { get; init; }
         public TimeSpanDto Duration { get; init; }
-        public DayOfWeekDto? DayOfWeek { get; init; } = new ();
+        public DaysOfWeekDto? DaysOfWeek { get; init; } = new ();
 
         public Schedule ToSchedule() {
             return new(
@@ -17,7 +17,7 @@ namespace Application.Application.DTO.Shared
                 EndDate,
                 Cadency.ToTimeSpan(),
                 Duration.ToTimeSpan(),
-                DayOfWeek!.ToDayOfWeek()
+                DaysOfWeek!.ToDaysOfWeek()
             );
         }
 
@@ -28,7 +28,7 @@ namespace Application.Application.DTO.Shared
                 EndDate = from.EndDate,
                 Cadency = TimeSpanDto.From(from.Cadency),
                 Duration = TimeSpanDto.From(from.Duration),
-                DayOfWeek = DayOfWeekDto.From(from.DaysOfWeek)
+                DaysOfWeek = DaysOfWeekDto.From(from.DaysOfWeek)
             };
         }
     }

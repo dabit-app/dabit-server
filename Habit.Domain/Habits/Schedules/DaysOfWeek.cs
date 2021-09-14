@@ -18,22 +18,8 @@ namespace Domain.Habits.Schedules
         Sunday = 64
     }
 
-    public static class DayOfWeekExtension
+    public static class DaysOfWeekExtension
     {
-        public static DaysOfWeek ToDayOfWeek(this DateTime datetime) {
-            return datetime.DayOfWeek switch
-            {
-                DayOfWeek.Sunday => DaysOfWeek.Sunday,
-                DayOfWeek.Monday => DaysOfWeek.Monday,
-                DayOfWeek.Tuesday => DaysOfWeek.Tuesday,
-                DayOfWeek.Wednesday => DaysOfWeek.Wednesday,
-                DayOfWeek.Thursday => DaysOfWeek.Thursday,
-                DayOfWeek.Friday => DaysOfWeek.Friday,
-                DayOfWeek.Saturday => DaysOfWeek.Saturday,
-                _ => throw new ArgumentOutOfRangeException(nameof(datetime))
-            };
-        }
-
         public static IEnumerable<DayOfWeek> GetAllDayOfWeek(this DaysOfWeek days) {
             var list = new List<DayOfWeek>();
 

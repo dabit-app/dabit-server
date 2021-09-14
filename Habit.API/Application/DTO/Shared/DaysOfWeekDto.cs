@@ -2,7 +2,7 @@ using Domain.Habits.Schedules;
 
 namespace Application.Application.DTO.Shared
 {
-    public record DayOfWeekDto
+    public record DaysOfWeekDto
     {
         public bool Monday { get; init; }
         public bool Tuesday { get; init; }
@@ -12,7 +12,7 @@ namespace Application.Application.DTO.Shared
         public bool Saturday { get; init; }
         public bool Sunday { get; init; }
 
-        public DaysOfWeek ToDayOfWeek() {
+        public DaysOfWeek ToDaysOfWeek() {
             return
                 (Monday ? DaysOfWeek.Monday : DaysOfWeek.None) |
                 (Tuesday ? DaysOfWeek.Tuesday : DaysOfWeek.None) |
@@ -23,11 +23,11 @@ namespace Application.Application.DTO.Shared
                 (Sunday ? DaysOfWeek.Sunday : DaysOfWeek.None);
         }
 
-        public static DayOfWeekDto? From(DaysOfWeek from) {
+        public static DaysOfWeekDto? From(DaysOfWeek from) {
             if (from == DaysOfWeek.None)
                 return null;
             
-            return new DayOfWeekDto
+            return new DaysOfWeekDto
             {
                 Monday = from.HasFlag(DaysOfWeek.Monday),
                 Tuesday = from.HasFlag(DaysOfWeek.Tuesday),

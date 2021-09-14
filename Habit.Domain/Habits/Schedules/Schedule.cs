@@ -10,12 +10,12 @@ namespace Domain.Habits.Schedules
     ///
     ///  - Duration = the time in which you can perform an habit.
     ///  - Cadency = the timespan in which it loops over.
-    ///  - DayOfWeek = (Optional) in case you want to precise which day of the week.
+    ///  - DaysOfWeek = (Optional) in case you want to precise which day of the week.
     /// 
     /// Example of scenario:
     ///  - Schedule for everyday. (Duration = 1day, Cadency = 1day)
     ///  - Schedule for once every three days. (Duration = 1day, Cadency = 3day)
-    ///  - Schedule for every week on tuesday and wednesday. (Duration = 1 week, Cadency = 1 week, DayOfWeek = {Tue, Wed})
+    ///  - Schedule for every week on tuesday and wednesday. (Duration = 1 week, Cadency = 1 week, DaysOfWeek = {Tue, Wed})
     ///  - Schedule for once but whenever you want, per week. (Duration = 1 week, Cadency = 1 week)
     /// </summary>
     public class Schedule
