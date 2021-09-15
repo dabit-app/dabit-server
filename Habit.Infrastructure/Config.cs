@@ -6,6 +6,8 @@ using EventStore.Client;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace Infrastructure
@@ -23,6 +25,8 @@ namespace Infrastructure
             var client = new MongoClient(connectionUri);
             var database = client.GetDatabase("dabit");
 
+            BsonSerializer.RegisterSerializer(typeof(DateTime), new DateTimeSerializer(DateTimeKind.Local));
+            
             services.AddSingleton(database);
         }
 
