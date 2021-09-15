@@ -1,9 +1,10 @@
 using System;
+using Application.Application.DTO.Shared;
 using Domain.Habits.Schedules;
 
-namespace Application.Application.DTO.Shared
+namespace Application.Application.DTO.Requests
 {
-    public record ScheduleDto
+    public record ScheduleRequest
     {
         public DateTime StartDate { get; init; }
         public DateTime? EndDate { get; init; }
@@ -19,17 +20,6 @@ namespace Application.Application.DTO.Shared
                 Duration.ToTimeSpan(),
                 DaysOfWeek!.ToDaysOfWeek()
             );
-        }
-
-        public static ScheduleDto From(Schedule from) {
-            return new()
-            {
-                StartDate = from.StartDate,
-                EndDate = from.EndDate,
-                Cadency = TimeSpanDto.From(from.Cadency),
-                Duration = TimeSpanDto.From(from.Duration),
-                DaysOfWeek = DaysOfWeekDto.From(from.DaysOfWeek)
-            };
         }
     }
 }

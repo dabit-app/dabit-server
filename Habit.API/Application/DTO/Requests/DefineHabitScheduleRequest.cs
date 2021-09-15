@@ -4,6 +4,6 @@ namespace Application.Application.DTO.Requests
 {
     public record DefineHabitScheduleRequest
     {
-        public ScheduleDto Schedule { get; init; }
+        public ScheduleRequest Schedule { get; init; }
     }
 }

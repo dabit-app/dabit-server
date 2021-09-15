@@ -14,21 +14,21 @@ namespace Application.Application.DTO.Responses
 
         public string Name { get; set; } = default!;
 
-        public ScheduleDto? Schedule { get; set; }
+        public ScheduleResponse? Schedule { get; set; }
         
         public IEnumerable<int> Completions { get; set; }
 
         public HabitResponse(HabitProjection projection) {
             Id = projection.Id;
             Name = projection.Name;
-            Schedule = projection.Schedule == null ? null : ScheduleDto.From(projection.Schedule);
+            Schedule = projection.Schedule == null ? null : ScheduleResponse.From(projection.Schedule);
             Completions = projection.Completions;
         }
 
         public HabitResponse(Habit habit) {
             Id = habit.Id;
             Name = habit.Name;
-            Schedule = habit.Schedule == null ? null : ScheduleDto.From(habit.Schedule);
+            Schedule = habit.Schedule == null ? null : ScheduleResponse.From(habit.Schedule);
             Completions = habit.Completions?.Values ?? new List<int>();
         }
     }

@@ -1,10 +1,11 @@
 using System;
+using Application.Application.DTO.Requests;
 using Application.Application.DTO.Shared;
 using FluentValidation;
 
 namespace Application.Application.Validations.Shared
 {
-    public class ScheduleRequestValidator : AbstractValidator<ScheduleDto>
+    public class ScheduleRequestValidator : AbstractValidator<ScheduleRequest>
     {
         public ScheduleRequestValidator() {
             RuleFor(o => o.StartDate).NotEmpty().Must(NotDefaultDate);
