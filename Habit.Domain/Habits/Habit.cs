@@ -50,7 +50,7 @@ namespace Domain.Habits
             if (Completions == null || Schedule == null)
                 throw new DomainException(typeof(Habit), "You must define a schedule first");
 
-            var @event = new HabitDayCompleted(day, Schedule);
+            var @event = new HabitEventCompleted(day, Schedule);
             Enqueue(@event);
             Apply(@event);
         }
@@ -61,7 +61,7 @@ namespace Domain.Habits
             if (Completions == null || Schedule == null)
                 throw new DomainException(typeof(Habit), "You must define a schedule first");
 
-            var @event = new HabitDayUncompleted(day, Schedule);
+            var @event = new HabitEventUncompleted(day, Schedule);
             Enqueue(@event);
             Apply(@event);
         }
@@ -88,10 +88,10 @@ namespace Domain.Habits
                 case HabitScheduleDefined habitScheduleDefined:
                     Apply(habitScheduleDefined);
                     return;
-                case HabitDayCompleted habitDayCompleted:
+                case HabitEventCompleted habitDayCompleted:
                     Apply(habitDayCompleted);
                     return;
-                case HabitDayUncompleted habitDayUncompleted:
+                case HabitEventUncompleted habitDayUncompleted:
                     Apply(habitDayUncompleted);
                     return;
                 case HabitDeleted habitDeleted:
@@ -117,17 +117,17 @@ namespace Domain.Habits
         private void Apply(HabitScheduleDefined @event) {
             Version++;
             Schedule = @event.Schedule;
-            Completions = new HabitCompletions(@event.Schedule);
+            Completions = new HabitCompletions();
         }
 
-        private void Apply(HabitDayCompleted @event) {
+        private void Apply(HabitEventCompleted @event) {
             Version++;
-            Completions?.Insert(@event.IntervalNumber);
+            Completions?.Insert(@event.NthEvent);
         }
 
-        private void Apply(HabitDayUncompleted @event) {
+        private void Apply(HabitEventUncompleted @event) {
             Version++;
-            Completions?.Remove(@event.IntervalNumber);
+            Completions?.Remove(@event.NthEvent);
         }
 
         private void Apply(HabitDeleted @event) {

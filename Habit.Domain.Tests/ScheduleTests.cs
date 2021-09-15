@@ -2,7 +2,6 @@ using System;
 using Domain.Habits.Schedules;
 using Domain.SeedWork.Exceptions;
 using Xunit;
-using DayOfWeek = Domain.Habits.Schedules.DayOfWeek;
 using TimeSpan = Domain.Habits.Schedules.TimeSpan;
 
 namespace Domain.Tests
@@ -22,7 +21,7 @@ namespace Domain.Tests
             Assert.Equal(DateTime.Today.AddMonths(1), everyDay.EndDate);
             Assert.Equal(new TimeSpan(), everyDay.Cadency);
             Assert.Equal(new TimeSpan(), everyDay.Duration);
-            Assert.Equal(DayOfWeek.None, everyDay.DayOfWeek);
+            Assert.Equal(DaysOfWeek.None, everyDay.DaysOfWeek);
 
             var everyThreeDay = new Schedule(
                 DateTime.Today,
@@ -38,11 +37,11 @@ namespace Domain.Tests
                 null,
                 new TimeSpan(TimeUnit.Week),
                 new TimeSpan(TimeUnit.Week),
-                DayOfWeek.Tuesday | DayOfWeek.Wednesday
+                DaysOfWeek.Tuesday | DaysOfWeek.Wednesday
             );
 
             Assert.Equal(new TimeSpan(TimeUnit.Week), everyWeekOnTueWed.Cadency);
-            Assert.Equal(DayOfWeek.Tuesday | DayOfWeek.Wednesday, everyWeekOnTueWed.DayOfWeek);
+            Assert.Equal(DaysOfWeek.Tuesday | DaysOfWeek.Wednesday, everyWeekOnTueWed.DaysOfWeek);
         }
 
         [Fact]
@@ -86,63 +85,116 @@ namespace Domain.Tests
         }
 
         [Fact]
-        public void CannotHaveCadencyLessThanAWeekWithDayOfWeekUsed() {
+        public void CannotHaveCadencyLessThanAWeekWithDaysOfWeekUsed() {
             var schedule = new Action(() => _ = new Schedule(
                 DateTime.Today,
                 DateTime.Today.AddMonths(1),
                 new TimeSpan(TimeUnit.Day, 2),
                 new TimeSpan(TimeUnit.Day, 2),
-                DayOfWeek.Monday | DayOfWeek.Friday
+                DaysOfWeek.Monday | DaysOfWeek.Friday
             ));
 
             Assert.Throws<DomainException>(schedule);
         }
 
         [Fact]
-        public void OnlyAllowPossibleDays() {
+        public void CannotInsertADateOutOfBound() {
+            var schedule = new Schedule(
+                DateTime.Today.AddDays(1),
+                DateTime.Today.AddDays(10),
+                new TimeSpan(),
+                new TimeSpan()
+            );
+
+            // out of bound should not be possible
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(DateTime.Today));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(DateTime.Today.AddDays(10)));
+
+            // but within it shouldn't throw any exception
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(1)) == 1);
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(9)) == 9);
+        }
+
+        [Fact]
+        public void OnlyValidDayShouldBeAccepted() {
+            // every 3 day we got 2 day to achieve something
             var schedule = new Schedule(
                 DateTime.Today.AddDays(1),
                 DateTime.Today.AddDays(10),
                 new TimeSpan(TimeUnit.Day, 3),
-                new TimeSpan()
+                new TimeSpan(TimeUnit.Day, 2)
             );
 
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today).Item1);
-            Assert.True(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(1)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(2)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(3)).Item1);
-            Assert.True(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(4)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(5)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(6)).Item1);
-            Assert.True(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(7)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(8)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(9)).Item1);
-            Assert.False(schedule.ValidateDayCanBeCompleted(DateTime.Today.AddDays(10)).Item1);
+            // day: 1st 2nd 3rd 4th 5th 6th 7th 8th 9th ...
+            // nth: [1] [1] [-] [2] [2] [-] [3] [3] [-] [4]
+
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(1)) == 1);
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(2)) == 1);
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(DateTime.Today.AddDays(3)));
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(4)) == 2);
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(5)) == 2);
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(DateTime.Today.AddDays(6)));
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(7)) == 3);
+            Assert.True(schedule.GetNthEventAt(DateTime.Today.AddDays(8)) == 3);
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(DateTime.Today.AddDays(9)));
         }
 
         [Fact]
         public void OnlyAllowPossibleDaysInWeek() {
             var baseDate = new DateTime(2021, 08, 29); // sunday
-            
+
             var schedule = new Schedule(
                 baseDate.AddDays(1),
                 baseDate.AddDays(10),
                 new TimeSpan(TimeUnit.Week),
                 new TimeSpan(TimeUnit.Week),
-                DayOfWeek.Monday | DayOfWeek.Wednesday | DayOfWeek.Saturday | DayOfWeek.Sunday
+                DaysOfWeek.Monday | DaysOfWeek.Wednesday | DaysOfWeek.Saturday | DaysOfWeek.Sunday
             );
 
-            Assert.False(schedule.ValidateDayCanBeCompleted(baseDate).Item1); // sun
-            Assert.True(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(1)).Item1); // mon
-            Assert.False(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(2)).Item1); // tue
-            Assert.True(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(3)).Item1); // wed
-            Assert.False(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(4)).Item1); // thu
-            Assert.False(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(5)).Item1); // fri
-            Assert.True(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(6)).Item1); // sat
-            Assert.True(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(7)).Item1); // sun
-            Assert.True(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(8)).Item1); // mon
-            Assert.False(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(9)).Item1); // tue
-            Assert.False(schedule.ValidateDayCanBeCompleted(baseDate.AddDays(10)).Item1); // wed
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(1)) == 1); // mon
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(2))); // tue
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(3)) == 2); // wed
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(4))); // thu
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(5))); // fri
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(6)) == 3); // sat
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(7)) == 4); // sun
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(8)) == 5); // mon
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(9))); // tue
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(10))); // wed
+        }
+
+        [Fact]
+        public void OnTwoWeekIntervalSecondWeekShouldBeEmpty() {
+            var baseDate = new DateTime(2021, 08, 29); // sunday
+            var schedule = new Schedule(
+                baseDate.AddDays(1),
+                baseDate.AddDays(16), // 2 week + 1 day
+                new TimeSpan(TimeUnit.Week, 2),
+                new TimeSpan(TimeUnit.Week),
+                DaysOfWeek.Monday | DaysOfWeek.Tuesday | DaysOfWeek.Wednesday | DaysOfWeek.Thursday
+                | DaysOfWeek.Friday | DaysOfWeek.Saturday | DaysOfWeek.Sunday
+            );
+
+            // first week should be counted - according to the schedule, all days are enabled
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(1)) == 1);
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(2)) == 2);
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(3)) == 3);
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(4)) == 4);
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(5)) == 5);
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(6)) == 6);
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(7)) == 7);
+
+            // this week should be empty
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(8)));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(9)));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(10)));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(11)));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(12)));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(13)));
+            Assert.Throws<DomainException>(() => schedule.GetNthEventAt(baseDate.AddDays(14)));
+            
+            // then third week should be again all good
+            Assert.True(schedule.GetNthEventAt(baseDate.AddDays(15)) == 8);
         }
     }
 }

@@ -61,8 +61,8 @@ namespace Application.Infrastructure
             services.Project<NewHabitCreated, HabitProjection>();
             services.Project<HabitNameChanged, HabitProjection>();
             services.Project<HabitScheduleDefined, HabitProjection>();
-            services.Project<HabitDayCompleted, HabitProjection>();
-            services.Project<HabitDayUncompleted, HabitProjection>();
+            services.Project<HabitEventCompleted, HabitProjection>();
+            services.Project<HabitEventUncompleted, HabitProjection>();
             services.Project<HabitDeleted, HabitProjection>();
 
             // signalR notifiers
