@@ -1,6 +1,6 @@
 using System;
 
-namespace Application.Extensions
+namespace Domain.SeedWork.Extensions
 {
     public static class DateExtension
     {

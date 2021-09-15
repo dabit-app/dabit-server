@@ -1,7 +1,6 @@
 using System;
-using System.Text;
-using Application.Extensions;
 using Domain.SeedWork.Exceptions;
+using Domain.SeedWork.Extensions;
 
 namespace Domain.Habits.Schedules
 {

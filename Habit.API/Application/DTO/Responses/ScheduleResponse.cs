@@ -1,6 +1,6 @@
 using Application.Application.DTO.Shared;
-using Application.Extensions;
 using Domain.Habits.Schedules;
+using Domain.SeedWork.Extensions;
 
 namespace Application.Application.DTO.Responses
 {
