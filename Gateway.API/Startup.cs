@@ -30,6 +30,7 @@ namespace Gateway.API
                     "CorsPolicy",
                     builder => builder
                         .AllowAnyOrigin()
+                        .AllowAnyMethod()
                         .WithHeaders("content-type", "authorization")
                 );
             });
