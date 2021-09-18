@@ -48,17 +48,17 @@ namespace Application.Controllers
         }
 
         [HttpPatch("{id:guid}/name", Name = "Change the name of a habit")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> ChangeName([FromRoute] Guid id, [FromBody] ChangeHabitNameRequest request) {
             var command = new ChangeHabitNameCommand(id, request.Name);
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch("{id:guid}/schedule", Name = "Define the schedule of a habit")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> DecideSchedule(
@@ -67,11 +67,11 @@ namespace Application.Controllers
         ) {
             var command = new DefineHabitScheduleCommand(id, request.Schedule.ToSchedule());
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPost("{id:guid}/completed", Name = "Mark a day as done")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> MarkDayAsCompleted(
             [FromRoute] Guid id,
@@ -79,11 +79,11 @@ namespace Application.Controllers
         ) {
             var command = new MarkHabitDayAsCompletedCommand(id, request.Day);
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}/completed", Name = "Remove the completion mark on a given day")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> MarkDayAsUncompleted(
             [FromRoute] Guid id,
@@ -91,16 +91,16 @@ namespace Application.Controllers
         ) {
             var command = new MarkHabitDayAsUncompletedCommand(id, request.Day);
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}", Name = "Delete an habit")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> DeleteHabit([FromRoute] Guid id) {
             var command = new DeleteHabitCommand(id);
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
     }
 }
