@@ -10,7 +10,7 @@ namespace Application.Application.DTO.Requests
         public DateTime? EndDate { get; init; }
         public TimeSpanDto Cadency { get; init; }
         public TimeSpanDto Duration { get; init; }
-        public DaysOfWeekDto? DaysOfWeek { get; init; } = new ();
+        public DaysOfWeekDto? DaysOfWeek { get; init; } = new();
 
         public Schedule ToSchedule() {
             return new(
@@ -18,7 +18,7 @@ namespace Application.Application.DTO.Requests
                 EndDate,
                 Cadency.ToTimeSpan(),
                 Duration.ToTimeSpan(),
-                DaysOfWeek!.ToDaysOfWeek()
+                DaysOfWeek?.ToDaysOfWeek() ?? Domain.Habits.Schedules.DaysOfWeek.None
             );
         }
     }
