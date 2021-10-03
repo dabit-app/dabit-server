@@ -1,6 +1,6 @@
-using Application.Application.DTO.Paginations;
+using Habit.API.Application.DTO.Pagination;
 
-namespace Application.Application.DTO.Requests
+namespace Habit.API.Application.DTO.Requests
 {
     public record GetAllHabitsRequest : IPaginatedRequest
     {

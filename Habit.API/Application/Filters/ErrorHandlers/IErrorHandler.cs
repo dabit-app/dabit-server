@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Application.Application.Filters.ErrorHandlers
+namespace Habit.API.Application.Filters.ErrorHandlers
 {
     public interface IErrorHandler<T> where T : Exception
     {

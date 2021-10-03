@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using Application.Application.DTO.Shared;
-using Domain.Habits;
 using Domain.Habits.Projections;
 
-namespace Application.Application.DTO.Responses
+namespace Habit.API.Application.DTO.Responses
 {
     public record HabitResponse
     {
@@ -25,7 +21,7 @@ namespace Application.Application.DTO.Responses
             Completions = projection.Completions;
         }
 
-        public HabitResponse(Habit habit) {
+        public HabitResponse(Domain.Habits.Habit habit) {
             Id = habit.Id;
             Name = habit.Name;
             Schedule = habit.Schedule == null ? null : ScheduleResponse.From(habit.Schedule);

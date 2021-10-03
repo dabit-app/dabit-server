@@ -1,12 +1,12 @@
 using System;
-using Application.Application.Filters.ErrorHandlers;
 using Domain.SeedWork.Exceptions;
 using FluentValidation;
+using Habit.API.Application.Filters.ErrorHandlers;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Application.Filters
+namespace Habit.API.Application.Filters
 {
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {

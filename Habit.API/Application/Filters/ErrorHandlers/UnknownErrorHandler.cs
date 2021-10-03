@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Application.Filters.ErrorHandlers
+namespace Habit.API.Application.Filters.ErrorHandlers
 {
     public class UnknownErrorHandler : IErrorHandler<Exception>
     {

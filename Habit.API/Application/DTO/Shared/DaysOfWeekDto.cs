@@ -1,6 +1,6 @@
 using Domain.Habits.Schedules;
 
-namespace Application.Application.DTO.Shared
+namespace Habit.API.Application.DTO.Shared
 {
     public record DaysOfWeekDto
     {

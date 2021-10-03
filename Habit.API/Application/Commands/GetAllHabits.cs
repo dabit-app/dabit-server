@@ -1,17 +1,16 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Application.DTO.Pagination;
-using Application.Application.DTO.Paginations;
-using Application.Application.DTO.Responses;
-using Application.Extensions;
 using Domain.Habits.Projections;
+using Habit.API.Application.DTO.Pagination;
+using Habit.API.Application.DTO.Responses;
+using Habit.API.Extensions;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 
-namespace Application.Application.Commands
+namespace Habit.API.Application.Commands
 {
     public record GetAllHabitsCommand(int? Page) : IRequest<PaginatedResult<HabitResponse>>, IPaginatedRequest;
 

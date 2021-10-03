@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Hubs;
+using Habit.API.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Application.Behaviors
+namespace Habit.API.Application.Behaviors
 {
     public class HabitNotifyBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

@@ -1,4 +1,4 @@
-namespace Application.Application.DTO.Requests
+namespace Habit.API.Application.DTO.Requests
 {
     public record DefineHabitScheduleRequest
     {

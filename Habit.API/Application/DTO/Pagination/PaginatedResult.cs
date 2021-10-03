@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Application.Application.DTO.Pagination
+namespace Habit.API.Application.DTO.Pagination
 {
     public record PaginatedResult<T>
     {

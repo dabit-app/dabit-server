@@ -1,8 +1,8 @@
-using Application.Application.DTO.Shared;
 using Domain.Habits.Schedules;
 using FluentValidation;
+using Habit.API.Application.DTO.Shared;
 
-namespace Application.Application.Validations.Shared
+namespace Habit.API.Application.Validations.Shared
 {
     public class TimeSpanRequestValidator : AbstractValidator<TimeSpanDto>
     {

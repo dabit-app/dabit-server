@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Application.Application.Validations.Shared
+namespace Habit.API.Application.Validations.Shared
 {
     public class HabitNameValidator : AbstractValidator<string>
     {

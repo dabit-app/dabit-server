@@ -1,4 +1,4 @@
-namespace Application.Application.DTO.Paginations
+namespace Habit.API.Application.DTO.Pagination
 {
     public interface IPaginatedRequest
     {

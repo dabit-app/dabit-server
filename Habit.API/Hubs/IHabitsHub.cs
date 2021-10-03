@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Application.Hubs
+namespace Habit.API.Hubs
 {
     public interface IHabitsHub
     {

@@ -1,6 +1,6 @@
-using Application.Application.Notifiers;
+using Habit.API.Application.Notifiers;
 
-namespace Application.Hubs
+namespace Habit.API.Hubs
 {
     public interface IHabitsHubNotifier<in TCommand> : INotifier<HabitsHub, IHabitsHub, TCommand>
     {

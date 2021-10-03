@@ -1,26 +1,25 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Extensions;
-using Domain.Habits;
 using Domain.Habits.Schedules;
 using Domain.SeedWork;
+using Habit.API.Extensions;
 using Infrastructure.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Application.Commands
+namespace Habit.API.Application.Commands
 {
     public record DefineHabitScheduleCommand(Guid Id, Schedule Schedule) : IRequest;
 
     public class DefineHabitScheduleHandler : IRequestHandler<DefineHabitScheduleCommand>
     {
         private readonly IHttpContextAccessor _context;
-        private readonly IEventStoreRepository<Habit> _habitRepository;
+        private readonly IEventStoreRepository<Domain.Habits.Habit> _habitRepository;
 
         public DefineHabitScheduleHandler(
             IHttpContextAccessor httpContextAccessor,
-            IEventStoreRepository<Habit> habitRepository
+            IEventStoreRepository<Domain.Habits.Habit> habitRepository
         ) {
             _context = httpContextAccessor;
             _habitRepository = habitRepository;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Application.Application.Filters.ErrorHandlers
+namespace Habit.API.Application.Filters.ErrorHandlers
 {
     public class DomainErrorHandler : IErrorHandler<DomainException>
     {

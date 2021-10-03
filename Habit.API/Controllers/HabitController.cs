@@ -1,16 +1,16 @@
 using System;
 using System.Threading.Tasks;
-using Application.Application.Commands;
-using Application.Application.DTO.Pagination;
-using Application.Application.DTO.Requests;
-using Application.Application.DTO.Responses;
-using Application.Extensions;
+using Habit.API.Application.Commands;
+using Habit.API.Application.DTO.Pagination;
+using Habit.API.Application.DTO.Requests;
+using Habit.API.Application.DTO.Responses;
+using Habit.API.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Application.Controllers
+namespace Habit.API.Controllers
 {
     [Route("api/[controller]")]
     [SwaggerTag("Create and manage habits.")]

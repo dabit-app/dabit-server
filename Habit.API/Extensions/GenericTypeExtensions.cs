@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Application.Extensions
+namespace Habit.API.Extensions
 {
     public static class GenericTypeExtensions
     {

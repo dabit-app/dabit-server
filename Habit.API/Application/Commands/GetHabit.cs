@@ -1,15 +1,15 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Application.DTO.Responses;
-using Application.Extensions;
 using Domain.Habits.Projections;
+using Habit.API.Application.DTO.Responses;
+using Habit.API.Extensions;
 using Infrastructure.Extensions;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Application.Commands
+namespace Habit.API.Application.Commands
 {
     public record GetHabitCommand(Guid Id) : IRequest<HabitResponse>;
 

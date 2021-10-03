@@ -1,19 +1,18 @@
 using System;
-using Application.Application.Behaviors;
-using Application.Application.Commands;
-using Application.Application.DTO.Pagination;
-using Application.Application.DTO.Requests;
-using Application.Application.DTO.Responses;
-using Application.Application.Filters.ErrorHandlers;
-using Application.Application.Notifiers;
-using Application.Application.Validations;
-using Application.Hubs;
-using Domain.Habits;
 using Domain.Habits.Events;
 using Domain.Habits.Projections;
 using Domain.SeedWork;
 using Domain.SeedWork.Exceptions;
 using FluentValidation;
+using Habit.API.Application.Behaviors;
+using Habit.API.Application.Commands;
+using Habit.API.Application.DTO.Pagination;
+using Habit.API.Application.DTO.Requests;
+using Habit.API.Application.DTO.Responses;
+using Habit.API.Application.Filters.ErrorHandlers;
+using Habit.API.Application.Notifiers;
+using Habit.API.Application.Validations;
+using Habit.API.Hubs;
 using Infrastructure;
 using Infrastructure.Events;
 using Infrastructure.Exceptions;
@@ -24,18 +23,18 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 // @formatter:max_line_length 180
-namespace Application.Infrastructure
+namespace Habit.API.Infrastructure
 {
     public static class DependenciesInjection
     {
         public static void AddApplicationDependenciesInjection(this IServiceCollection services) {
             // repositories
-            services.AddScoped<IEventStoreRepository<Habit>, EventStoreRepository<Habit>>();
+            services.AddScoped<IEventStoreRepository<Domain.Habits.Habit>, EventStoreRepository<Domain.Habits.Habit>>();
             services.AddCheckpointRepository("subscription-checkpoint");
             services.AddMongoRepository<HabitProjection>("habits", collection => { collection.AddGuidIndex(habit => habit.UserId); });
 
             // commands
-            services.AddTransient<IRequestHandler<CreateHabitCommand, Habit>, CreateHabitHandler>();
+            services.AddTransient<IRequestHandler<CreateHabitCommand, Domain.Habits.Habit>, CreateHabitHandler>();
             services.AddTransient<IRequestHandler<ChangeHabitNameCommand>, ChangeHabitNameHandler>();
             services.AddTransient<IRequestHandler<DefineHabitScheduleCommand>, DefineHabitScheduleHandler>();
             services.AddTransient<IRequestHandler<MarkHabitDayAsCompletedCommand>, MarkHabitDayAsCompletedHandler>();
@@ -81,7 +80,7 @@ namespace Application.Infrastructure
             {
                 return new AggregateMapper(new[]
                 {
-                    typeof(Habit)
+                    typeof(Domain.Habits.Habit)
                 });
             });
         }

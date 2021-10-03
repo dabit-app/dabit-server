@@ -1,9 +1,8 @@
 using System;
-using Application.Application.DTO.Requests;
-using Application.Application.DTO.Shared;
 using FluentValidation;
+using Habit.API.Application.DTO.Requests;
 
-namespace Application.Application.Validations.Shared
+namespace Habit.API.Application.Validations.Shared
 {
     public class ScheduleRequestValidator : AbstractValidator<ScheduleRequest>
     {

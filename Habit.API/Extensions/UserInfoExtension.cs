@@ -2,7 +2,7 @@ using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Extensions
+namespace Habit.API.Extensions
 {
     public static class UserInfoExtension
     {

@@ -4,7 +4,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Application.Filters
+namespace Habit.API.Application.Filters
 {
     public class ValidatorActionFilter : IActionFilter
     {

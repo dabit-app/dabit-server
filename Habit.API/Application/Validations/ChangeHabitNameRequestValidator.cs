@@ -1,8 +1,8 @@
-using Application.Application.DTO.Requests;
-using Application.Application.Validations.Shared;
 using FluentValidation;
+using Habit.API.Application.DTO.Requests;
+using Habit.API.Application.Validations.Shared;
 
-namespace Application.Application.Validations
+namespace Habit.API.Application.Validations
 {
     public class ChangeHabitNameRequestValidator : AbstractValidator<ChangeHabitNameRequest>
     {

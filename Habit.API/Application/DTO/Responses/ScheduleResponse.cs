@@ -1,8 +1,8 @@
-using Application.Application.DTO.Shared;
 using Domain.Habits.Schedules;
 using Domain.SeedWork.Extensions;
+using Habit.API.Application.DTO.Shared;
 
-namespace Application.Application.DTO.Responses
+namespace Habit.API.Application.DTO.Responses
 {
     public record ScheduleResponse
     {

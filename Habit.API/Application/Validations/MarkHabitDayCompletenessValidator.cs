@@ -1,7 +1,7 @@
-using Application.Application.DTO.Requests;
 using FluentValidation;
+using Habit.API.Application.DTO.Requests;
 
-namespace Application.Application.Validations
+namespace Habit.API.Application.Validations
 {
     public class MarkHabitDayCompletenessValidator : AbstractValidator<MarkHabitDayCompleteness>
     {

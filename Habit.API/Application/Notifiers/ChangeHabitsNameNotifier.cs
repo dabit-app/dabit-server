@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using Application.Application.Commands;
-using Application.Hubs;
+using Habit.API.Application.Commands;
+using Habit.API.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Application.Application.Notifiers
+namespace Habit.API.Application.Notifiers
 {
     public class ChangeHabitsNameNotifier : IHabitsHubNotifier<ChangeHabitNameCommand>
     {

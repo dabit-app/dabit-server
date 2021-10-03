@@ -1,7 +1,7 @@
-using Application.Application.Filters;
-using Application.Hubs;
-using Application.Infrastructure;
 using FluentValidation.AspNetCore;
+using Habit.API.Application.Filters;
+using Habit.API.Hubs;
+using Habit.API.Infrastructure;
 using Identity.JWT;
 using Infrastructure;
 using MediatR;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Application
+namespace Habit.API
 {
     public class Startup
     {

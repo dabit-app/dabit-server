@@ -1,8 +1,8 @@
 using System;
-using Application.Application.DTO.Shared;
 using Domain.Habits.Schedules;
+using Habit.API.Application.DTO.Shared;
 
-namespace Application.Application.DTO.Requests
+namespace Habit.API.Application.DTO.Requests
 {
     public record ScheduleRequest
     {

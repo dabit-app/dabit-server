@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 
-namespace Application.Hubs
+namespace Habit.API.Hubs
 {
     public class HabitsHub : Hub<IHabitsHub>
     {

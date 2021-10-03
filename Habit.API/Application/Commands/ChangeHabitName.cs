@@ -1,25 +1,24 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Extensions;
-using Domain.Habits;
 using Domain.SeedWork;
+using Habit.API.Extensions;
 using Infrastructure.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Application.Commands
+namespace Habit.API.Application.Commands
 {
     public record ChangeHabitNameCommand(Guid Id, string Name) : IRequest;
 
     public class ChangeHabitNameHandler : IRequestHandler<ChangeHabitNameCommand>
     {
         private readonly IHttpContextAccessor _context;
-        private readonly IEventStoreRepository<Habit> _habitRepository;
+        private readonly IEventStoreRepository<Domain.Habits.Habit> _habitRepository;
 
         public ChangeHabitNameHandler(
             IHttpContextAccessor context,
-            IEventStoreRepository<Habit> habitRepository
+            IEventStoreRepository<Domain.Habits.Habit> habitRepository
         ) {
             _context = context;
             _habitRepository = habitRepository;

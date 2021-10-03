@@ -2,7 +2,7 @@ using System;
 using Domain.Habits.Schedules;
 using TimeSpan = Domain.Habits.Schedules.TimeSpan;
 
-namespace Application.Application.DTO.Shared
+namespace Habit.API.Application.DTO.Shared
 {
     public record TimeSpanDto
     {
