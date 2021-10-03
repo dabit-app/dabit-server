@@ -3,15 +3,15 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <UserSecretsId>fb5dc150-622c-4376-a84f-4d5abb3ec294</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>fb5dc150-622c-4376-a84f-4d5abb3ec294</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Yarp.ReverseProxy" Version="1.0.0-preview.12.*" />
+        <PackageReference Include="Yarp.ReverseProxy" Version="1.0.0-preview.12.*"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Identity.JWT\Identity.JWT.csproj" />
+        <ProjectReference Include="..\Identity.JWT\Identity.JWT.csproj"/>
     </ItemGroup>
 
 </Project>
