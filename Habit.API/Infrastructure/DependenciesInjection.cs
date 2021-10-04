@@ -1,7 +1,4 @@
 using System;
-using Domain.Habits.Events;
-using Domain.Habits.Projections;
-using Domain.SeedWork;
 using Domain.SeedWork.Exceptions;
 using FluentValidation;
 using Habit.API.Application.Behaviors;
@@ -13,12 +10,7 @@ using Habit.API.Application.Filters.ErrorHandlers;
 using Habit.API.Application.Notifiers;
 using Habit.API.Application.Validations;
 using Habit.API.Hubs;
-using Infrastructure;
-using Infrastructure.Events;
 using Infrastructure.Exceptions;
-using Infrastructure.Projections;
-using Infrastructure.Repositories;
-using Infrastructure.Subscriptions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,11 +20,6 @@ namespace Habit.API.Infrastructure
     public static class DependenciesInjection
     {
         public static void AddApplicationDependenciesInjection(this IServiceCollection services) {
-            // repositories
-            services.AddScoped<IEventStoreRepository<Domain.Habits.Habit>, EventStoreRepository<Domain.Habits.Habit>>();
-            services.AddCheckpointRepository("subscription-checkpoint");
-            services.AddMongoRepository<HabitProjection>("habits", collection => { collection.AddGuidIndex(habit => habit.UserId); });
-
             // commands
             services.AddTransient<IRequestHandler<CreateHabitCommand, Domain.Habits.Habit>, CreateHabitHandler>();
             services.AddTransient<IRequestHandler<ChangeHabitNameCommand>, ChangeHabitNameHandler>();
@@ -56,14 +43,6 @@ namespace Habit.API.Infrastructure
             services.AddTransient<IErrorHandler<AggregateNotFoundException>, AggregateNotFoundErrorHandler>();
             services.AddTransient<IErrorHandler<AggregateNotOwnedException>, AggregateNotOwnedErrorHandler>();
 
-            // projections
-            services.Project<NewHabitCreated, HabitProjection>();
-            services.Project<HabitNameChanged, HabitProjection>();
-            services.Project<HabitScheduleDefined, HabitProjection>();
-            services.Project<HabitEventCompleted, HabitProjection>();
-            services.Project<HabitEventUncompleted, HabitProjection>();
-            services.Project<HabitDeleted, HabitProjection>();
-
             // signalR notifiers
             services.AddTransient<IHabitsHubNotifier<ChangeHabitNameCommand>, ChangeHabitsNameNotifier>();
 
@@ -71,18 +50,6 @@ namespace Habit.API.Infrastructure
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(HabitNotifyBehavior<,>));
 
-            // miscellaneous
-            AddAggregateMapper(services);
-        }
-
-        private static void AddAggregateMapper(IServiceCollection services) {
-            services.AddSingleton<IAggregateMapper>(_ =>
-            {
-                return new AggregateMapper(new[]
-                {
-                    typeof(Domain.Habits.Habit)
-                });
-            });
         }
     }
 }

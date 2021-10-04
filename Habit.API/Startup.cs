@@ -32,6 +32,7 @@ namespace Habit.API
 
             // application
             services.AddMediatR(typeof(Startup));
+            services.AddInfrastructureDependenciesInjection();
             services.AddApplicationDependenciesInjection();
             services.AddFluentValidation();
             services.AddSignalR();
