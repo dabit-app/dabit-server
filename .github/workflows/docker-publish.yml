@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract Docker metadata for Habit.API
-        id: meta
+        id: meta-habit-api
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-habit-api
@@ -43,11 +43,11 @@ jobs:
           context: .
           file: Habit.API/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-habit-api.outputs.tags }}
+          labels: ${{ steps.meta-habit-api.outputs.labels }}
 
       - name: Extract Docker metadata for Habit.Worker
-        id: meta
+        id: meta-habit-worker
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-habit-worker
@@ -58,11 +58,11 @@ jobs:
           context: .
           file: Habit.Worker/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-habit-worker.outputs.tags }}
+          labels: ${{ steps.meta-habit-worker.outputs.labels }}
 
       - name: Extract Docker metadata for Identity.API
-        id: meta
+        id: meta-identity-api
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-identity-api
@@ -73,11 +73,11 @@ jobs:
           context: .
           file: Identity.API/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-identity-api.outputs.tags }}
+          labels: ${{ steps.meta-identity-api.outputs.labels }}
 
       - name: Extract Docker metadata for Gateway.API
-        id: meta
+        id: meta-gateway-api
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-gateway-api
@@ -88,5 +88,5 @@ jobs:
           context: .
           file: Gateway.API/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-gateway-api.outputs.tags }}
+          labels: ${{ steps.meta-gateway-api.outputs.labels }}
