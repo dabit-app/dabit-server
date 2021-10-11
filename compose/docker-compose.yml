@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+  eventstore.db:
+    image: eventstore/eventstore:20.10.2-buster-slim
+    container_name: dabit-event-store
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - 2113:2113
+
+  mongo.habit.db:
+    image: mongo:latest
+    container_name: dabit-mongo-habit
+    ports:
+      - 27017:27017
+
+  mongo.user.db:
+    image: mongo:latest
+    container_name: dabit-mongo-user
+    ports:
+      - 27018:27017
+
+  traefik:
+    image: traefik:v2.5
+    container_name: dabit-traefik
+    command:
+      - "--api.insecure=true"
+      - "--accesslog=true"
+      - "--providers.file.filename=/etc/traefik/traefik-dev.yml"
+      - "--entrypoints.websecure.address=:5000"
+    ports:
+      - 5000:5000
+      - 8080:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "$PWD/traefik-dev.yml:/etc/traefik/traefik-dev.yml"

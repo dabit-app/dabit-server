@@ -75,18 +75,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-identity-api.outputs.tags }}
           labels: ${{ steps.meta-identity-api.outputs.labels }}
-
-      - name: Extract Docker metadata for Gateway.API
-        id: meta-gateway-api
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-gateway-api
-          
-      - name: Build and push Docker image for Gateway.API
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Gateway.API/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta-gateway-api.outputs.tags }}
-          labels: ${{ steps.meta-gateway-api.outputs.labels }}

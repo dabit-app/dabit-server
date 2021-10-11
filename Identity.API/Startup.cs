@@ -19,6 +19,17 @@ namespace Identity.API
             services.AddApplicationDependenciesInjection(Configuration);
             services.AddControllers();
             
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .WithHeaders("content-type", "authorization")
+                );
+            });
+            
             // api doc
             services.AddApiGeneration();
         }
@@ -31,12 +42,9 @@ namespace Identity.API
                 app.UseApiUi();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

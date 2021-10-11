@@ -6,7 +6,7 @@
       "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "api-docs",
-      "applicationUrl": "https://localhost:5002",
+      "applicationUrl": "http://0.0.0.0:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
