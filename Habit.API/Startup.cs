@@ -36,6 +36,18 @@ namespace Habit.API
             services.AddApplicationDependenciesInjection();
             services.AddFluentValidation();
             services.AddSignalR();
+            
+            // cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .WithHeaders("content-type", "authorization")
+                );
+            });
 
             // auth
             services
@@ -64,6 +76,7 @@ namespace Habit.API
             }
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
