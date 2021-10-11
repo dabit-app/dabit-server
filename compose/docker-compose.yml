@@ -31,11 +31,10 @@ services:
       - "--api.insecure=true"
       - "--accesslog=true"
       - "--providers.file.filename=/etc/traefik/traefik-dev.yml"
-      - "--entrypoints.web.address=:5000"
+      - "--entrypoints.websecure.address=:5000"
     ports:
       - 5000:5000
       - 8080:8080
-    network_mode: host
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

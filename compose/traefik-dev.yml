@@ -1,11 +1,18 @@
+entryPoints:
+  websecure:
+    address: ":443"
+    http:
+      tls: { }
 http:
   routers:
     habit-router:
       rule: "PathPrefix(`/api/habit`)"
       service: habit-api
+      tls: {}
     identity-router:
       rule: "PathPrefix(`/api/auth`)"
       service: identity-api
+      tls: {}
   services:
     identity-api:
       loadBalancer:
