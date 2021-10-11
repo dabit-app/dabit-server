@@ -1,0 +1,17 @@
+http:
+  routers:
+    habit-router:
+      rule: "PathPrefix(`/api/habit`)"
+      service: habit-api
+    identity-router:
+      rule: "PathPrefix(`/api/auth`)"
+      service: identity-api
+  services:
+    identity-api:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:5002/"
+    habit-api:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:5001/"
