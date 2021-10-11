@@ -1,14 +1,14 @@
 # Local dev environment
 
-There is two service that need to be unified under a single endpoint, so the frontend can hit it. You can see
-the [docker-compose.yml](docker-compose.yml) for the details.
+There are two services that need to be unified under a single endpoint, so that the frontend can hit it. You can see
+the [docker-compose.yml](docker-compose.yml) file itself for the details.
 
 | :exclamation: | This setup is not intended to be used in production |
 |---------------|:----------------------------------------------------|
 
 ## Run
 
-Typically you would run these to get a fully working environment + the frontend.
+Typically you would run these to get a fully working dev environment + the frontend.
 
 ```bash
 docker-compose -f compose/docker-compose.yml up -d
@@ -27,4 +27,4 @@ dotnet run --project Habit.Worker
 | Traefik dashboard | localhost:8080 |
 
 `Identity.API` & `Habit.API` are exposed for convenience reason as this is a dev setup.
-In production, only the `API main endpoint` (which is Traefik) would be exposed. This also what the frontend use.
+In production, only the `API main endpoint` (which is Traefik) would be exposed. This is also what the frontend use.
