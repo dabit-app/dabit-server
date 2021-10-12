@@ -37,6 +37,10 @@ namespace Habit.API
             services.AddFluentValidation();
             services.AddSignalR();
             
+            // health check
+            services.AddHealthChecks()
+                .AddMongoDb(_configuration.GetConnectionString("dabit-mongo-db"));
+            
             // cors
             services.AddCors(options =>
             {
@@ -82,6 +86,7 @@ namespace Habit.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<HabitsHub>("/realtime");
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
