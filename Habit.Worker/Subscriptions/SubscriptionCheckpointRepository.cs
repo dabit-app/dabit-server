@@ -1,13 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain.SeedWork;
 using EventStore.Client;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace Infrastructure.Subscriptions
+namespace Habit.Worker.Subscriptions
 {
     public class SubscriptionCheckpointRepository : MongoRepository<SubscriptionCheckpoint>,
         ISubscriptionCheckpointRepository

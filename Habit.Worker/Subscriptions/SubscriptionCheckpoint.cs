@@ -1,7 +1,7 @@
 using System;
 using Domain.SeedWork;
 
-namespace Infrastructure.Subscriptions
+namespace Habit.Worker.Subscriptions
 {
     public record SubscriptionCheckpoint(Guid Id, ulong Position) : IIdentifiable;
 }

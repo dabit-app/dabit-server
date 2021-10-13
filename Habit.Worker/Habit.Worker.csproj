@@ -4,10 +4,13 @@
         <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>dotnet-Habit.Worker-6ADC119B-3598-4A19-B4CA-AD1A0BE28923</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.1" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="5.0.11" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     </ItemGroup>
 
