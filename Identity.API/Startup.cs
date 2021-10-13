@@ -16,9 +16,15 @@ namespace Identity.API
         private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
+            // application
             services.AddApplicationDependenciesInjection(Configuration);
             services.AddControllers();
             
+            // health check
+            services.AddHealthChecks()
+                .AddMongoDb(Configuration.GetConnectionString("dabit-user-mongo-db"));
+            
+            // cors
             services.AddCors(options =>
             {
                 options.AddPolicy(
@@ -45,7 +51,11 @@ namespace Identity.API
             app.UseRouting();
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }

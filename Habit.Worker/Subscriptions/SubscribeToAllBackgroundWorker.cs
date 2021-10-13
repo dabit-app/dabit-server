@@ -2,15 +2,17 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
+using Habit.Worker.Health;
 using Infrastructure.Events;
 using Infrastructure.Serialization;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Polly;
 
-namespace Infrastructure.Subscriptions
+namespace Habit.Worker.Subscriptions
 {
     public class SubscribeToAllBackgroundWorker : IHostedService
     {
@@ -19,6 +21,7 @@ namespace Infrastructure.Subscriptions
         private readonly EventStoreClient _eventStoreClient;
         private readonly IAggregateMapper _aggregateMapper;
         private readonly ISubscriptionCheckpointRepository _checkpointRepository;
+        private readonly SubscriptionState _subscriptionState;
         private CancellationTokenSource? _cts;
 
         public SubscribeToAllBackgroundWorker(
@@ -26,13 +29,15 @@ namespace Infrastructure.Subscriptions
             ILogger<SubscribeToAllBackgroundWorker> logger,
             EventStoreClient eventStoreClient,
             IAggregateMapper aggregateMapper,
-            ISubscriptionCheckpointRepository checkpointRepository
+            ISubscriptionCheckpointRepository checkpointRepository,
+            SubscriptionState subscriptionState
         ) {
             _serviceProvider = serviceProvider;
             _logger = logger;
             _eventStoreClient = eventStoreClient;
             _aggregateMapper = aggregateMapper;
             _checkpointRepository = checkpointRepository;
+            _subscriptionState = subscriptionState;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken) {
@@ -69,6 +74,8 @@ namespace Infrastructure.Subscriptions
 
             _logger.LogInformation("Successfully subscribed");
             _logger.LogInformation("Stream taken from position {}", position.CommitPosition);
+            
+            _subscriptionState.State = HealthStatus.Healthy;
         }
 
         private async Task HandleEvent(
@@ -115,6 +122,8 @@ namespace Infrastructure.Subscriptions
             Exception? exception
         ) {
             _logger.LogWarning(exception, "Subscription dropped with reason: {reason}", subscriptionDroppedReason);
+            _subscriptionState.State = HealthStatus.Unhealthy;
+            
             Resubscribe().Wait();
         }
 

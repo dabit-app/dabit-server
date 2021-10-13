@@ -5,7 +5,6 @@ using Domain.SeedWork;
 using Infrastructure.Events;
 using Infrastructure.Projections;
 using Infrastructure.Repositories;
-using Infrastructure.Subscriptions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
@@ -15,7 +14,6 @@ namespace Infrastructure
         public static void AddInfrastructureDependenciesInjection(this IServiceCollection services) {
             // repositories
             services.AddScoped<IEventStoreRepository<Habit>, EventStoreRepository<Habit>>();
-            services.AddCheckpointRepository("subscription-checkpoint");
             services.AddMongoRepository<HabitProjection>(
                 "habits",
                 async collection => { await collection.AddGuidIndex(habit => habit.UserId); }

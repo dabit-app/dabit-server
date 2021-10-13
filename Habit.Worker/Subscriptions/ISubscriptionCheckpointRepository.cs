@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventStore.Client;
 
-namespace Infrastructure.Subscriptions
+namespace Habit.Worker.Subscriptions
 {
     public interface ISubscriptionCheckpointRepository
     {
